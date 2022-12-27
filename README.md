@@ -316,6 +316,52 @@ const handleRowDel = ({ id }) => {  // 删除对应事件
 
 ![image-20221227162702038](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271627184.png)
 
+## 多选删除
+
+第一步：增加个多选删除的按钮
+
+![image-20221227175301572](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271753538.png)
+
+第二步：选中获取单个id
+
+```javascript
+const handleSelectionChange = (val) => {
+    multipleSelection.value = []    // 进行清空
+    val.forEach(item => {   // 遍历获取每个id
+        multipleSelection.value.push(item.id)
+    })
+    console.log(multipleSelection);
+}
+```
+
+第三步：删除单条
+
+```javascript
+// 删除一条
+const handleRowDel = ({ id }) => {  // 删除对应事件
+    console.log(id)
+    // 1.通过id获取到条目对应的索引值
+    let index = tableData.value.findIndex(item => item.id === id)
+    // 2.通过索引值进行删除对应条目
+    tableData.value.splice(index, 1)
+}
+```
+
+第四步：遍历删除多条
+
+```javascript
+const handleDelList = () => {
+    multipleSelection.value.forEach(id => {
+        handleRowDel({ id })
+    })
+    multipleSelection.value = []
+}
+```
+
+效果：
+
+![image-20221227175659390](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271757435.png)
+
 ## 用法
 
 我这采用pnpm安装管理依赖

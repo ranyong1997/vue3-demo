@@ -3,7 +3,7 @@
  * @version: 
  * @Author: 冉勇
  * @Date: 2022-12-27 09:50:33
- * @LastEditTime: 2022-12-27 16:09:39
+ * @LastEditTime: 2022-12-27 17:54:44
 -->
 <script setup>
 import { ref } from "vue";
@@ -12,7 +12,7 @@ let queryInput = ref("")
 let tableData = ref([
     {
         id: '1',
-        name: 'Tom',
+        name: 'Tom1',
         email: '123qq.com',
         phone: '13888888888',
         state: 'California',
@@ -20,7 +20,7 @@ let tableData = ref([
     },
     {
         id: '2',
-        name: 'Tom',
+        name: 'Tom2',
         email: '123qq.com',
         phone: '13888888888',
         state: 'California',
@@ -28,7 +28,7 @@ let tableData = ref([
     },
     {
         id: '3',
-        name: 'Tom',
+        name: 'Tom3',
         email: '123qq.com',
         phone: '13888888888',
         state: 'California',
@@ -36,13 +36,13 @@ let tableData = ref([
     },
     {
         id: '4',
-        name: 'Tom',
+        name: 'Tom4',
         email: '123qq.com',
         phone: '13888888888',
         state: 'California',
         address: 'No. 189, Grove St, Los Angeles',
     }])
-let multipleSelection = ref([])
+let multipleSelection = ref([]) // 多次选择
 let dialogFormVisible = ref(false)
 let tableForm = ref({
     name: '张三',
@@ -53,6 +53,7 @@ let tableForm = ref({
 })
 let dialoyType = ref('add')
 // 方法
+// 删除一条
 const handleRowDel = ({ id }) => {  // 删除对应事件
     console.log(id)
     // 1.通过id获取到条目对应的索引值
@@ -60,9 +61,20 @@ const handleRowDel = ({ id }) => {  // 删除对应事件
     // 2.通过索引值进行删除对应条目
     tableData.value.splice(index, 1)
 }
+// 删除多条
+const handleDelList = () => {
+    multipleSelection.value.forEach(id => {
+        handleRowDel({ id })
+    })
+    multipleSelection.value = []
+}
+// 选中
 const handleSelectionChange = (val) => {
-    multipleSelection.value = val
-    console.log(val)
+    multipleSelection.value = []    // 进行清空
+    val.forEach(item => {   // 遍历获取每个id
+        multipleSelection.value.push(item.id)
+    })
+    console.log(multipleSelection);
 }
 // 点击增加
 const handleAdd = () => {
@@ -91,7 +103,10 @@ const dialogConfirm = () => {
         <!-- 功能 -->
         <div class="query-box">
             <el-input class="query-input" v-model="queryInput" placeholder="请输入姓名搜索" />
-            <el-button type="primary" @click="handleAdd">增加</el-button>
+            <div class="btn-list">
+                <el-button type="primary" @click="handleAdd">增加</el-button>
+                <el-button type="danger" @click="handleDelList" v-if="multipleSelection.length > 0">删除多选</el-button>
+            </div>
         </div>
         <!-- 表格 -->
         <el-table border ref="multipleTableRef" :data="tableData" style="width: 100%"
