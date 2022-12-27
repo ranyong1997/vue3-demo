@@ -294,6 +294,28 @@ const dialogConfirm = () => {
 
 ![image-20221227153344052](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271533214.png)
 
+## 删除数据
+
+第一步：找到删除按钮对应的事件
+
+![image-20221227160541778](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271605385.png)
+
+第二步：传参数
+
+```javascript
+const handleRowDel = ({ id }) => {  // 删除对应事件
+    console.log(id)
+    // 1.通过id获取到条目对应的索引值
+    let index = tableData.value.findIndex(item => item.id === id)
+    // 2.通过索引值进行删除对应条目
+    tableData.value.splice(index, 1)
+}
+```
+
+效果：
+
+![image-20221227162702038](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271627184.png)
+
 ## 用法
 
 我这采用pnpm安装管理依赖

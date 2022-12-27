@@ -3,7 +3,7 @@
  * @version: 
  * @Author: 冉勇
  * @Date: 2022-12-27 09:50:33
- * @LastEditTime: 2022-12-27 15:36:24
+ * @LastEditTime: 2022-12-27 16:09:39
 -->
 <script setup>
 import { ref } from "vue";
@@ -53,8 +53,12 @@ let tableForm = ref({
 })
 let dialoyType = ref('add')
 // 方法
-const handleRowClick = () => {
-    console.log('click')
+const handleRowDel = ({ id }) => {  // 删除对应事件
+    console.log(id)
+    // 1.通过id获取到条目对应的索引值
+    let index = tableData.value.findIndex(item => item.id === id)
+    // 2.通过索引值进行删除对应条目
+    tableData.value.splice(index, 1)
 }
 const handleSelectionChange = (val) => {
     multipleSelection.value = val
@@ -99,8 +103,8 @@ const dialogConfirm = () => {
             <el-table-column prop="state" label="状态" width="120" />
             <el-table-column prop="address" label="地址" width="300" />
             <el-table-column fixed="right" label="操作" width="120">
-                <template #default>
-                    <el-button link type="primary" size="small" @click="handleRowClick"
+                <template #default="scope">
+                    <el-button link type="primary" size="small" @click="handleRowDel(scope.row)"
                         style="color:#F56C6C">删除</el-button>
                     <el-button link type="primary" size="small">编辑</el-button>
                 </template>
