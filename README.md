@@ -270,7 +270,29 @@ const handleAdd = () => {
 }
 ```
 
+效果：
 
+![image-20221227114128813](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271141342.png)
+
+## 新增数据
+
+第一步：
+
+```javascript
+const dialogConfirm = () => {
+    dialogFormVisible.value = false
+    // 1.拿到数据
+    // 2.添加到table
+    tableData.value.push({
+        id: (tableData.value.length + 1).toString(),
+        ...tableForm.value
+    })
+}
+```
+
+效果：
+
+![image-20221227153344052](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271533214.png)
 
 ## 用法
 

@@ -3,48 +3,45 @@
  * @version: 
  * @Author: 冉勇
  * @Date: 2022-12-27 09:50:33
- * @LastEditTime: 2022-12-27 11:35:24
+ * @LastEditTime: 2022-12-27 15:36:24
 -->
 <script setup>
 import { ref } from "vue";
 // 数据
 let queryInput = ref("")
-let tableData = ref([{
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-},
-{
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-},
-{
-    date: '2016-05-04',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-},
-{
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-}])
+let tableData = ref([
+    {
+        id: '1',
+        name: 'Tom',
+        email: '123qq.com',
+        phone: '13888888888',
+        state: 'California',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        id: '2',
+        name: 'Tom',
+        email: '123qq.com',
+        phone: '13888888888',
+        state: 'California',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        id: '3',
+        name: 'Tom',
+        email: '123qq.com',
+        phone: '13888888888',
+        state: 'California',
+        address: 'No. 189, Grove St, Los Angeles',
+    },
+    {
+        id: '4',
+        name: 'Tom',
+        email: '123qq.com',
+        phone: '13888888888',
+        state: 'California',
+        address: 'No. 189, Grove St, Los Angeles',
+    }])
 let multipleSelection = ref([])
 let dialogFormVisible = ref(false)
 let tableForm = ref({
@@ -54,6 +51,7 @@ let tableForm = ref({
     state: '在职',
     address: '广东省'
 })
+let dialoyType = ref('add')
 // 方法
 const handleRowClick = () => {
     console.log('click')
@@ -62,8 +60,21 @@ const handleSelectionChange = (val) => {
     multipleSelection.value = val
     console.log(val)
 }
+// 点击增加
 const handleAdd = () => {
-    dialogFormVisible.value = true
+    dialogFormVisible.value = true  // 显示对话框
+    tableForm.value = {}    // 数据清空
+}
+// 点击确定
+const dialogConfirm = () => {
+    dialogFormVisible.value = false // 关闭对话框
+    // 1.拿到数据
+    // 2.添加到table
+    tableData.value.push({  // 将对话框数据push到表格中
+        id: (tableData.value.length + 1).toString(),    // 模拟id数据，进行获取table表格行数+1的到最后的id，并转为字符串
+        ...tableForm.value
+    })
+    console.log(tableData);
 }
 </script>
 
@@ -82,21 +93,21 @@ const handleAdd = () => {
         <el-table border ref="multipleTableRef" :data="tableData" style="width: 100%"
             @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" />
-            <el-table-column fixed prop="date" label="Date" width="150" />
-            <el-table-column prop="name" label="Name" width="120" />
-            <el-table-column prop="state" label="State" width="120" />
-            <el-table-column prop="city" label="City" width="120" />
-            <el-table-column prop="address" label="Address" width="600" />
-            <el-table-column prop="zip" label="Zip" width="120" />
-            <el-table-column fixed="right" label="Operations" width="120">
+            <el-table-column prop="name" label="姓名" width="120" />
+            <el-table-column prop="email" label="邮箱" width="120" />
+            <el-table-column prop="phone" label="电话" width="120" />
+            <el-table-column prop="state" label="状态" width="120" />
+            <el-table-column prop="address" label="地址" width="300" />
+            <el-table-column fixed="right" label="操作" width="120">
                 <template #default>
-                    <el-button link type="primary" size="small" @click="handleRowClick">Detail</el-button>
-                    <el-button link type="primary" size="small">Edit</el-button>
+                    <el-button link type="primary" size="small" @click="handleRowClick"
+                        style="color:#F56C6C">删除</el-button>
+                    <el-button link type="primary" size="small">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <!-- 弹窗 -->
-        <el-dialog v-model="dialogFormVisible" title="Shipping address">
+        <el-dialog v-model="dialogFormVisible" :title="dialoyType === 'add' ? '新增' : '编辑'">
             <el-form :model="tableForm">
                 <el-form-item label="姓名" :label-width="80">
                     <el-input v-model="tableForm.name" autocomplete="off" />
@@ -124,7 +135,7 @@ const handleAdd = () => {
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button type="primary" @click="dialogFormVisible = false">
+                    <el-button type="primary" @click="dialogConfirm">
                         确认
                     </el-button>
                 </span>
