@@ -56,7 +56,7 @@ app.mount('#app')
 
 ![image-20221227102147659](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271021573.png)
 
-### 进行页面填充模块
+## 进行页面填充模块
 
 ![简易版CRUD图](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271058838.jpg)
 
@@ -151,9 +151,60 @@ const handleRowClick = () => {
 </style>
 ```
 
+效果：
+
 ![image-20221227110122274](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271101898.png)
 
+## 页面优化
 
+第一步：标题居中
+
+```css
+.title {
+    text-align: center;
+}
+```
+
+第二步：搜索框和增加按钮在同一列中
+
+```css
+.query-box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.el-input {
+    width: 200px;
+}
+```
+
+第三步：怎加一个多选框
+
+```vue
+<el-table border ref="multipleTableRef" :data="tableData" style="width: 100%"
+            @selection-change="handleSelectionChange">
+<el-table-column type="selection" width="55" />
+```
+
+![image-20221227111419673](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271114241.png)
+
+第四步：在script里面添加方法
+
+```vue
+<script setup>
+import { ref } from "vue";
+let multipleSelection = ref([])
+const handleSelectionChange = (val) => {
+    multipleSelection.value = val
+    console.log(val)
+}
+</script>
+```
+
+效果：
+
+![image-20221227111615040](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271116437.png)
 
 
 
