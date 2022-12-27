@@ -179,7 +179,7 @@ const handleRowClick = () => {
 }
 ```
 
-第三步：怎加一个多选框
+第三步：增加一个多选框
 
 ```vue
 <el-table border ref="multipleTableRef" :data="tableData" style="width: 100%"
@@ -205,6 +205,70 @@ const handleSelectionChange = (val) => {
 效果：
 
 ![image-20221227111615040](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271116437.png)
+
+## 新增弹窗
+
+第一步：引入弹窗组件
+
+```vue
+<el-dialog v-model="dialogFormVisible" title="Shipping address">
+            <el-form :model="tableForm">
+                <el-form-item label="姓名" :label-width="80">
+                    <el-input v-model="tableForm.name" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <el-form :model="tableForm">
+                <el-form-item label="邮箱" :label-width="80">
+                    <el-input v-model="tableForm.email" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <el-form :model="tableForm">
+                <el-form-item label="电话" :label-width="80">
+                    <el-input v-model="tableForm.phone" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <el-form :model="tableForm">
+                <el-form-item label="地址" :label-width="80">
+                    <el-input v-model="tableForm.address" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <el-form :model="tableForm">
+                <el-form-item label="状态" :label-width="80">
+                    <el-input v-model="tableForm.state" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="dialogFormVisible = false">
+                        确认
+                    </el-button>
+                </span>
+            </template>
+</el-dialog>
+```
+
+第二步：在增加按钮添加个事件
+
+```vue
+<el-button type="primary" @click="handleAdd">增加</el-button>
+```
+
+第三步：在script中添加方法
+
+```vue
+let dialogFormVisible = ref(false)
+let tableForm = ref({
+    name: '张三',
+    email: '123@gmail.com',
+    phone: '13888888888',
+    state: '在职',
+    address: '广东省'
+})
+
+const handleAdd = () => {
+    dialogFormVisible.value = true
+}
+```
 
 
 

@@ -3,7 +3,7 @@
  * @version: 
  * @Author: 冉勇
  * @Date: 2022-12-27 09:50:33
- * @LastEditTime: 2022-12-27 11:10:49
+ * @LastEditTime: 2022-12-27 11:35:24
 -->
 <script setup>
 import { ref } from "vue";
@@ -46,6 +46,14 @@ let tableData = ref([{
     tag: 'Office',
 }])
 let multipleSelection = ref([])
+let dialogFormVisible = ref(false)
+let tableForm = ref({
+    name: '张三',
+    email: '123@gmail.com',
+    phone: '13888888888',
+    state: '在职',
+    address: '广东省'
+})
 // 方法
 const handleRowClick = () => {
     console.log('click')
@@ -53,6 +61,9 @@ const handleRowClick = () => {
 const handleSelectionChange = (val) => {
     multipleSelection.value = val
     console.log(val)
+}
+const handleAdd = () => {
+    dialogFormVisible.value = true
 }
 </script>
 
@@ -64,8 +75,8 @@ const handleSelectionChange = (val) => {
         </div>
         <!-- 功能 -->
         <div class="query-box">
-            <el-input v-model="queryInput" placeholder="请输入姓名搜索" />
-            <el-button type="primary">增加</el-button>
+            <el-input class="query-input" v-model="queryInput" placeholder="请输入姓名搜索" />
+            <el-button type="primary" @click="handleAdd">增加</el-button>
         </div>
         <!-- 表格 -->
         <el-table border ref="multipleTableRef" :data="tableData" style="width: 100%"
@@ -84,16 +95,49 @@ const handleSelectionChange = (val) => {
                 </template>
             </el-table-column>
         </el-table>
+        <!-- 弹窗 -->
+        <el-dialog v-model="dialogFormVisible" title="Shipping address">
+            <el-form :model="tableForm">
+                <el-form-item label="姓名" :label-width="80">
+                    <el-input v-model="tableForm.name" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <el-form :model="tableForm">
+                <el-form-item label="邮箱" :label-width="80">
+                    <el-input v-model="tableForm.email" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <el-form :model="tableForm">
+                <el-form-item label="电话" :label-width="80">
+                    <el-input v-model="tableForm.phone" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <el-form :model="tableForm">
+                <el-form-item label="地址" :label-width="80">
+                    <el-input v-model="tableForm.address" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <el-form :model="tableForm">
+                <el-form-item label="状态" :label-width="80">
+                    <el-input v-model="tableForm.state" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="dialogFormVisible = false">
+                        确认
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <style scoped>
 .table-box {
     width: 800px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: 200px auto;
+
 }
 
 .title {
@@ -106,7 +150,7 @@ const handleSelectionChange = (val) => {
     margin-bottom: 20px;
 }
 
-.el-input {
+.query-input {
     width: 200px;
 }
 </style>
