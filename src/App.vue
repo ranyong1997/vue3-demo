@@ -3,7 +3,7 @@
  * @version: 
  * @Author: 冉勇
  * @Date: 2022-12-27 09:50:33
- * @LastEditTime: 2022-12-27 17:54:44
+ * @LastEditTime: 2022-12-28 09:48:56
 -->
 <script setup>
 import { ref } from "vue";
@@ -53,9 +53,16 @@ let tableForm = ref({
 })
 let dialoyType = ref('add')
 // 方法
+// 编辑
+const handleEdit = (row) => {
+    dialogFormVisible.value = true  // 显示对话框
+    dialoyType.value = 'edit'   // 定义为编辑
+    // console.log(row);
+    tableForm.value = { ...row }
+}
 // 删除一条
 const handleRowDel = ({ id }) => {  // 删除对应事件
-    console.log(id)
+    // console.log(id)
     // 1.通过id获取到条目对应的索引值
     let index = tableData.value.findIndex(item => item.id === id)
     // 2.通过索引值进行删除对应条目
@@ -74,23 +81,33 @@ const handleSelectionChange = (val) => {
     val.forEach(item => {   // 遍历获取每个id
         multipleSelection.value.push(item.id)
     })
-    console.log(multipleSelection);
+    // console.log(multipleSelection);
 }
 // 点击增加
 const handleAdd = () => {
     dialogFormVisible.value = true  // 显示对话框
     tableForm.value = {}    // 数据清空
+    dialoyType.value = 'add'    // 定义为新增
 }
 // 点击确定
 const dialogConfirm = () => {
     dialogFormVisible.value = false // 关闭对话框
-    // 1.拿到数据
-    // 2.添加到table
-    tableData.value.push({  // 将对话框数据push到表格中
-        id: (tableData.value.length + 1).toString(),    // 模拟id数据，进行获取table表格行数+1的到最后的id，并转为字符串
-        ...tableForm.value
-    })
-    console.log(tableData);
+    // 1、判断是新增还是编辑
+    if (dialoyType.value === 'add') {
+        // 1.拿到数据
+        // 2.添加到table
+        tableData.value.push({  // 将对话框数据push到表格中
+            id: (tableData.value.length + 1).toString(),    // 模拟id数据，进行获取table表格行数+1的到最后的id，并转为字符串
+            ...tableForm.value
+        })
+        // console.log(tableData);
+    } else {
+        // 1、获取到当前的这条的索引
+        let index = tableData.value.findIndex(item => item.id === tableForm.value.id)
+        // console.log(index)
+        // 2、替换当前索引值对应的数据
+        tableData.value[index] = tableForm.value
+    }
 }
 </script>
 
@@ -121,7 +138,7 @@ const dialogConfirm = () => {
                 <template #default="scope">
                     <el-button link type="primary" size="small" @click="handleRowDel(scope.row)"
                         style="color:#F56C6C">删除</el-button>
-                    <el-button link type="primary" size="small">编辑</el-button>
+                    <el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
                 </template>
             </el-table-column>
         </el-table>

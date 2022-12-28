@@ -1,4 +1,5 @@
 <!--
+
  * @Descripttion: 
  * @version: 
  * @Author: 冉勇
@@ -361,6 +362,57 @@ const handleDelList = () => {
 效果：
 
 ![image-20221227175659390](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212271757435.png)
+
+## 编辑数据
+
+第一步：在编辑按钮增加click事件
+
+```vue
+<el-button link type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
+```
+
+![image-20221228094707533](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212280947871.png)
+
+第二步：编写编辑方法
+
+```vue
+const handleEdit = (row) => {
+    dialogFormVisible.value = true  // 显示对话框
+    dialoyType.value = 'edit'   // 定义为编辑
+    console.log(row);
+    tableForm.value = { ...row }
+}
+```
+
+第三步：进行确定事件判断
+
+```vue
+const dialogConfirm = () => {
+    dialogFormVisible.value = false // 关闭对话框
+    // 1、判断是新增还是编辑
+    if (dialoyType.value === 'add') {
+        // 1.拿到数据
+        // 2.添加到table
+        tableData.value.push({  // 将对话框数据push到表格中
+            id: (tableData.value.length + 1).toString(),    // 模拟id数据，进行获取table表格行数+1的到最后的id，并转为字符串
+            ...tableForm.value
+        })
+        console.log(tableData);
+    } else {
+        // 1、获取到当前的这条的索引
+        let index = tableData.value.findIndex(item => item.id === tableForm.value.id)
+        console.log(index)
+        // 2、替换当前索引值对应的数据
+        tableData.value[index] = tableForm.value
+    }
+}
+```
+
+效果：
+
+![image-20221228094939930](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212280949907.png)
+
+![image-20221228094955617](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212280949716.png)
 
 ## 用法
 
