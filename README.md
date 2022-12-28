@@ -414,6 +414,38 @@ const dialogConfirm = () => {
 
 ![image-20221228094955617](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212280949716.png)
 
+## 搜索数据
+
+第一步：在搜索增加@input
+
+```vue
+<el-input class="query-input" v-model="queryInput" placeholder="请输入姓名搜索" @input="handleQueryName" />
+```
+
+![image-20221228103016597](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212281030489.png)
+
+第二步：编写搜索方法
+
+```vue
+const handleQueryName = (val) => {
+    // console.log(queryInput.value)    // 监听用户输入数据
+    // console.log(val) // 监听用户输入数据
+    // todo: bug，如果搜索一次可成功，多次搜索就没有数据展示
+    if (val.length > 0) {
+        tableData = tableData.value.filter(item => (item.name).toLowerCase().match(val.toLowerCase())) // 将大写转为小写
+        console.log(tableData)
+    } else {
+        tableData = tableDataCopy
+    }
+}
+```
+
+效果：
+
+![image-20221228103107479](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212281031575.png)
+
+
+
 ## 用法
 
 我这采用pnpm安装管理依赖

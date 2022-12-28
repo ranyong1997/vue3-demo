@@ -3,7 +3,7 @@
  * @version: 
  * @Author: 冉勇
  * @Date: 2022-12-27 09:50:33
- * @LastEditTime: 2022-12-28 09:48:56
+ * @LastEditTime: 2022-12-28 10:29:30
 -->
 <script setup>
 import { ref } from "vue";
@@ -42,6 +42,7 @@ let tableData = ref([
         state: 'California',
         address: 'No. 189, Grove St, Los Angeles',
     }])
+let tableDataCopy = Object.assign(tableData)    // 浅拷贝
 let multipleSelection = ref([]) // 多次选择
 let dialogFormVisible = ref(false)
 let tableForm = ref({
@@ -53,6 +54,18 @@ let tableForm = ref({
 })
 let dialoyType = ref('add')
 // 方法
+// 搜索
+const handleQueryName = (val) => {
+    // console.log(queryInput.value)    // 监听用户输入数据
+    // console.log(val) // 监听用户输入数据
+    // todo: bug，如果搜索一次可成功，多次搜索就没有数据展示
+    if (val.length > 0) {
+        tableData = tableData.value.filter(item => (item.name).toLowerCase().match(val.toLowerCase()))
+        console.log(tableData)
+    } else {
+        tableData = tableDataCopy
+    }
+}
 // 编辑
 const handleEdit = (row) => {
     dialogFormVisible.value = true  // 显示对话框
@@ -119,7 +132,7 @@ const dialogConfirm = () => {
         </div>
         <!-- 功能 -->
         <div class="query-box">
-            <el-input class="query-input" v-model="queryInput" placeholder="请输入姓名搜索" />
+            <el-input class="query-input" v-model="queryInput" placeholder="请输入姓名搜索" @input="handleQueryName" />
             <div class="btn-list">
                 <el-button type="primary" @click="handleAdd">增加</el-button>
                 <el-button type="danger" @click="handleDelList" v-if="multipleSelection.length > 0">删除多选</el-button>
