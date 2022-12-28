@@ -444,7 +444,17 @@ const handleQueryName = (val) => {
 
 ![image-20221228103107479](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212281031575.png)
 
+## 打包
 
+第一步：配置打包路径
+
+如果不配置，则会出现白屏
+
+```vue
+base: './', // 打包相对路径
+```
+
+![image-20221228103551406](https://cdn.jsdelivr.net/gh/ranyong1997/image_collect@main/img/202212281035507.png)
 
 ## 用法
 
@@ -461,3 +471,16 @@ pnpm add 包名
 ```shell
 pnpm remove 包名
 ```
+
+### 运行
+
+```shell
+pnpm run dev
+```
+
+### 打包项目
+
+```shell
+pnpm build
+```
+
